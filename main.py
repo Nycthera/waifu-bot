@@ -97,6 +97,15 @@ ABSURDITIES = [
     "I communicate with aliens through interpretive dance.",
 ]
 
+DELUSIONAL_PHRASES = [
+    "I am the supreme ruler of snack time!",
+    "All hail the mighty cookie overlord!",
+    "Bow before my vast collection of rubber ducks!",
+    "I am the master of all things fluffy!",    
+    "I possess the ancient wisdom of the pancake!",
+    "I hold the secret recipe for the perfect cookie!"
+]
+
 # ---------------------------
 # UTILITIES
 # ---------------------------
@@ -194,6 +203,7 @@ if user_input:
     absurd = random.choice(ABSURDITIES) if chaos >= 4 else ""
     haiku = tiny_haiku(user_input.split()[0]) if chaos >= 6 else ""
     repeats = repeat_for_emphasis("!!!", chaos)
+    delusional = random.choice(DELUSIONAL_PHRASES) if chaos >= 5 else ""
 
     primer = f"""
 You are an absurd, theatrical, and extremely silly anime waifu in {mood.upper()} mode.
@@ -204,6 +214,7 @@ Pun: {pun}
 Absurd aside: {absurd}
 Optional haiku: {haiku}
 Repeat pattern: {repeats}
+Delusional claim: {delusional}
 REMEMBER: Always stay in character. Never break the fourth wall.
 ALWAYS BE SLIGHT CRAZY, DRAMATIC, AND OVER-THE-TOP.
 """
