@@ -11,6 +11,25 @@ api_key = os.getenv("API_KEY")
 client = genai.Client(api_key=api_key)
 
 # ---------------------------
+# PASSCODE GATE
+# ---------------------------
+CORRECT_PASSCODE = "waifu_time"  # 🔒 change this
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.title("🔒 Welcome to Silly Waifu Bot")
+    pass_input = st.text_input("Enter secret passcode:", type="password")
+    if st.button("Unlock"):
+        if pass_input == CORRECT_PASSCODE:
+            st.session_state.authenticated = True
+            st.success("✅ Access granted! The waifu awaits...")
+            st.rerun()   # ✅ replaces st.experimental_rerun()
+        else:
+            st.error("❌ Wrong passcode. Try again!")
+    st.stop()  # 🚫 Prevents rest of the app from loading
+
+# ---------------------------
 # ULTRA-SILLY WAIFU CONFIG
 # ---------------------------
 MOODS = [
