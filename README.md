@@ -25,7 +25,7 @@ All interactions are **fictional, safe, and chaos-driven**. 🎭✨
 1. **Clone the repo**:
 
    ```bash
-   git clone https://github.com/your-username/waifu-bot.git
+   git clone https://github.com/nycthera/waifu-bot.git
    cd waifu-bot
 
 2. **Set up environment**:
