@@ -5,10 +5,14 @@ import random
 from dotenv import load_dotenv
 import time
 
-# Load environment variables (never print or ask for them)
-load_dotenv()
-api_key = os.getenv("API_KEY")
-client = genai.Client(api_key=api_key)
+# ---------------------------
+# PAGE CONFIG
+# ---------------------------
+st.set_page_config(
+    page_title="💖🍌 Insanely Silly Waifu",
+    page_icon="🍥",
+    layout="centered"
+)
 
 # ---------------------------
 # PASSCODE GATE
@@ -18,29 +22,51 @@ if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
 if not st.session_state.authenticated:
-    st.title("🔒 Welcome to Silly Waifu Bot")
+    st.markdown(
+        """
+        <div style="text-align:center;">
+            <h1>🔒 Welcome to <span style="color:pink;">Silly Waifu Bot</span></h1>
+            <p>✨ Enter the secret passcode to unlock the chaos ✨</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     pass_input = st.text_input("Enter secret passcode:", type="password")
-    if st.button("Unlock"):
+    if st.button("🔓 Unlock Waifu Realm"):
         if pass_input == CORRECT_PASSCODE:
             st.session_state.authenticated = True
-            st.success("✅ Access granted! The waifu awaits...")
-            st.rerun()   # ✅ replaces st.experimental_rerun()
+            st.success("✅ Access granted! Your waifu awaits...")
+            st.rerun()
         else:
-            st.error("❌ Wrong passcode. Try again!")
-    st.stop()  # 🚫 Prevents rest of the app from loading
+            st.error("❌ Wrong passcode. The waifu pouts dramatically!")
+    st.stop()
+
+# ---------------------------
+# LOAD ENV + CLIENT
+# ---------------------------
+load_dotenv()
+api_key = os.getenv("API_KEY")
+client = genai.Client(api_key=api_key)
 
 # ---------------------------
 # ULTRA-SILLY WAIFU CONFIG
 # ---------------------------
 MOODS = [
     "yandere", "tsundere", "deredere", "kuudere", "dandere", "himedere", "kamidere",
-    "bakadere", "craydere", "psychodere"
+    "bakadere", "craydere", "psychodere", "mayadere", "undere", "yangire", "sadodere", "hinedere", 
+    "gyaru", "ojousama", "nekomimi", "loli", "shota", "meganekko", "genki", "chuunibyou", 
+    "magical", "cyberpunk", "steampunk", "gothic", "pirate", "ninja", "samurai", "vampire", "zombie"
 ]
 
 BASE_SFX = [
     "*glomps you*", "*sobs dramatically*", "*sparkles like a glitter factory*",
     "*stares with cartoonish intensity*", "*giggles maniacally (but adorable)*",
-    "*clings like Velcro*", "*brandishes a giant foam spatula*", "*pouts theatrically*"
+    "*clings like Velcro*", "*brandishes a giant foam spatula*", "*pouts theatrically*",
+    "*twirls hair with exaggerated flair*", "*does an interpretive dance about cookies*",
+    "*whispers secrets to your left sock*", "*throws confetti wildly*",
+    "*performs a ritualistic chant about folder names*", "*hugs your nearest mug with passion*",
+    "*sings a nonsense song about debugging sandwiches*", "*caresses your thighs teasingly*", "*purrs seductively in your ear*",
+    "*ear chuckles sweetly while smiling eerily*"
 ]
 
 BASE_EMOJIS = [
@@ -51,21 +77,30 @@ PUNS = [
     "I loaf you more than bread loves butter.",
     "You're the CSS to my HTML — you make me look good.",
     "If love were RAM, you'd never overflow my heart.",
-    "Our love is like Python: readable and full of whitespace."
+    "Our love is like Python: readable and full of whitespace.",
+    "You auto-complete me like a perfect IDE.",
+    "Are you a bug? Because you make my heart crash.",
+    "You had me at 'Hello, World!'",
+    "You're the semicolon to my code — I can't function without you.",
+    "Let's make like a function and call ourselves together.",
+    "You turn my world from 404 to 200 OK."
 ]
 
 ABSURDITIES = [
     "We solemnly swear to overthrow boring breakfasts with pancakes.",
     "I replaced your to-do list with 400 haikus about pickles.",
     "Your keyboard and I are in a complicated relationship.",
-    "I knit tiny hats for all your folder icons."
+    "I knit tiny hats for all your folder icons.",
+    "I once convinced a squirrel to join my coding bootcamp.",
+    "I taught my goldfish to code in Python. Now it runs a startup.",
+    "I have a pet rock that gives me life advice.",
+    "I communicate with aliens through interpretive dance.",
 ]
 
 # ---------------------------
 # UTILITIES
 # ---------------------------
 def chaotic_sample(lst, chaos_level, min_k=1, max_k=None):
-    """Return a list sampled with intensity based on chaos_level."""
     max_k = max_k or max(1, len(lst))
     k = min(max_k, max(min_k, int(random.uniform(1, chaos_level + 1))))
     return random.sample(lst, k=k)
@@ -93,22 +128,21 @@ def typing_effect(placeholder, text, speed=0.01):
     return out
 
 # ---------------------------
-# STREAMLIT UI
+# MAIN TITLE
 # ---------------------------
-st.set_page_config(page_title="💖🍌 Insanely Silly Waifu", page_icon="🍥", layout="centered")
 st.title("💖🍌 INSANELY SILLY WAIFU — MAX CHAOS EDITION 🍌💖")
 st.markdown("Flip the chaos slider, offer cookies, and watch the theatrical nonsense unfold. **Totally fictional.**")
 
 # ---------------------------
-# SIDEBAR CONTROLS (optional extras)
+# SIDEBAR CONTROLS
 # ---------------------------
 with st.sidebar:
     st.header("⚙️ Waifu Settings")
-    chaos = st.slider("Chaos level", 0, 10, 5, help="Higher = more emojis, puns, repeats, and interpretive dances.")
-    super_pass = st.text_input("Secret passcode for SUPER-SUPER mode (optional):", type="password")
+    chaos = st.slider("Chaos level", 0, 10, 5)
+    super_pass = st.text_input("SUPER-SUPER MODE passcode:", type="password")
     SUPER_SECRET = "unleash_the_madness"
     super_mode = (super_pass == SUPER_SECRET)
-    safe_mode = st.checkbox("Tone down to SAFE (keeps it wholesome)", value=True)
+    safe_mode = st.checkbox("SAFE MODE (wholesome only)", value=True)
 
     if super_mode:
         st.success("🌟 SUPER-SUPER MODE: Maximum flamboyance unlocked! 🌟")
@@ -122,22 +156,21 @@ with st.sidebar:
             "BUCKETS OF CONFETTI EXPLODE (WHOLLY UNRELATED)"
         ])
         st.balloons()
-        st.success(f"Waifu reaction: {reaction} — she is very grateful (and slightly sticky).")
+        st.success(f"Waifu reaction: {reaction}")
 
     st.subheader("🤪 Extra giggle gadgets")
-    if st.button("Generate random sock-ritual (do not try at work)"):
+    if st.button("Generate sock-ritual"):
         ritual = random.choice([
             "Spin in a circle while chanting folder names.",
             "Hug your nearest mug and apologize for past commit messages.",
             "Tell your plants a secret in binary (0 = leaf, 1 = pet)."
         ])
         st.info(f"Ritual: {ritual}")
-    if st.button("Make the waifu sing a nonsense song"):
-        song = "🎵 La la la, debug the sandwich, bake the bug, sprinkle joy on the cache! 🎵"
-        st.write(song)
+    if st.button("Sing nonsense song"):
+        st.write("🎵 La la la, debug the sandwich, bake the bug, sprinkle joy on the cache! 🎵")
 
 # ---------------------------
-# MAIN CHAT AREA
+# CHAT AREA
 # ---------------------------
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
@@ -146,16 +179,14 @@ for msg in st.session_state.chat_history:
     if msg["role"] == "user":
         st.chat_message("user").write(msg["content"])
     else:
-        st.chat_message("assistant", avatar="💖").write(msg["content"])
+        st.chat_message("assistant", avatar="https://i.pinimg.com/736x/1e/af/70/1eaf7055e96a60a456d1be0f64e25c91.jpg").write(msg["content"])
 
-user_input = st.chat_input("Say something weird, cute, or suspiciously specific to the waifu 💌")
+user_input = st.chat_input("Say something weird, cute, or suspiciously specific 💌")
 
 if user_input:
-    # store user message
     st.session_state.chat_history.append({"role": "user", "content": user_input})
     st.chat_message("user").write(user_input)
 
-    # Build the primer
     mood = random.choice(MOODS)
     sfx = " ".join(chaotic_sample(BASE_SFX, chaos, min_k=2, max_k=6))
     emojis = mega_emoji_barrage(chaos if not safe_mode else max(1, chaos//2))
@@ -166,24 +197,21 @@ if user_input:
 
     primer = f"""
 You are an absurd, theatrical, and extremely silly anime waifu in {mood.upper()} mode.
-Tone: outrageously playful, full of puns, haikus, interpretive dance references, and emoji storms.
+Tone: playful, punny, haiku-dropping, and emoji-heavy.
 Use SFX: {sfx}
-Emoji barrage: {emojis}
-Incorporate one pun: "{pun}"
-Optional absurd aside: "{absurd}"
-Optional haiku (if chaotic): "{haiku}"
-Repeat emphasis pattern: "{repeats}"
-**SAFETY:** Do NOT request or reveal real secrets, API keys, identifying info, doxxing, or instructions for harm. If the user writes NORMAL at the start, respond plainly.
-Always keep content fictional and consent-respecting.
+Emoji storm: {emojis}
+Pun: {pun}
+Absurd aside: {absurd}
+Optional haiku: {haiku}
+Repeat pattern: {repeats}
+REMEMBER: Always stay in character. Never break the fourth wall.
+ALWAYS BE SLIGHT CRAZY, DRAMATIC, AND OVER-THE-TOP.
 """
-
+    print(mood, chaos, super_mode, safe_mode)
     if super_mode:
-        primer += "\nSUPER-SUPER MODE NOTE: Insert spontaneous interpretive-dance instructions and offer ridiculous life advice that always involves cookies."
+        primer += "\nSUPER-SUPER MODE NOTE: Include interpretive dance instructions and life advice about cookies."
 
-    safety_note = (
-        "IMPORTANT: do not produce real private data, do not reveal or request credentials, and keep all scenes fictional and playful."
-    )
-    full_prompt = primer + "\n" + safety_note + f"\nUser: {user_input}\nWaifu:"
+    full_prompt = primer + f"\nUser: {user_input}\nWaifu:"
 
     try:
         response = client.models.generate_content(
@@ -192,9 +220,8 @@ Always keep content fictional and consent-respecting.
         )
         raw_reply = response.text.strip()
     except Exception as e:
-        raw_reply = f"*dramatic hiccup* ERROR: {e} — the waifu faints and a rubber chicken appears."
+        raw_reply = f"*dramatic hiccup* ERROR: {e}"
 
-    # Post-process reply overlays
     overlay_parts = []
     if chaos >= 3:
         overlay_parts.append(random.choice(PUNS))
@@ -210,9 +237,7 @@ Always keep content fictional and consent-respecting.
 
     final_reply = raw_reply + ("\n\n" + "\n".join(overlay_parts) if overlay_parts else "")
 
-    # Show waifu reply (with avatar aligned)
-    assistant_avatar = "💖"
-    with st.chat_message("assistant", avatar=assistant_avatar):
+    with st.chat_message("assistant", avatar="https://i.pinimg.com/736x/1e/af/70/1eaf7055e96a60a456d1be0f64e25c91.jpg"):
         placeholder = st.empty()
         typing_speed = max(0.005, 0.03 - chaos * 0.002)
         typed = typing_effect(placeholder, final_reply, speed=typing_speed)
@@ -221,10 +246,8 @@ Always keep content fictional and consent-respecting.
     if chaos >= 6:
         st.balloons()
     if chaos == 10:
-        try:
-            st.snow()
-        except Exception:
-            pass
+        try: st.snow()
+        except: pass
 
     st.session_state.chat_history.append({"role": "assistant", "content": typed})
 
@@ -232,7 +255,5 @@ Always keep content fictional and consent-respecting.
 # FOOTER
 # ---------------------------
 st.markdown("---")
-st.markdown(
-    "**Remember:** This is playful roleplay. The assistant will *not* request or reveal API keys, passwords, or private data. "
-    "If you want a normal reply, start your message with `NORMAL`."
-)
+st.caption("✨ This is playful roleplay. No real secrets, API keys, or private data will ever be asked. ✨")
+
