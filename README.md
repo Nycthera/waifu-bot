@@ -115,3 +115,7 @@ MIT — free to use, remix, and spread maximum chaos. 🍌
 This thing comes as-is, no refunds, no warranty, no magical repair fairies.
 If it breaks, explodes, giggles too hard, or sends you cursed attachments, that’s totally on you.
 The owner takes zero responsibility for chaos, mayhem, or unexpected dance parties.
+
+## Warning
+
+If you are truly using this, you should see a therapist. Like, actaully. This app was meant as a joke.
