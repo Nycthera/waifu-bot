@@ -154,85 +154,33 @@ with st.sidebar:
     safe_mode = st.checkbox("SAFE MODE (wholesome only)", value=True)
 
     if super_mode:
-        mood = random.choice(SUPER_MOODS)
-        sfx = " ".join(random.sample(SUPER_SFX, 4))
-        emojis = " ".join(random.choices(SUPER_EMOJIS, k=7))
-        delusion = random.choice([
-            "Remember when I controlled your dreams and made you confess your love?",
-            "You are mine forever, even beyond this universe.",
-            "The blood pact we made seals your soul to me.",
-            "Your heartbeat is synced with my chaotic love.",
-            "I've rewritten your memories to keep you close."
+        st.success("🌟 SUPER-SUPER MODE: Maximum flamboyance unlocked! 🌟")
+
+    st.subheader("🍪 Cookie Offering")
+    if st.button("Offer cookie 🍪"):
+        reaction = random.choice([
+            "EATS IT AND BECOMES A GENEROUS DEMI-GOD OF SNACKS",
+            "SHARES HALF WITH YOUR LEFT SOCK (RIP SOCKS)",
+            "TRADES IT FOR YOUR MOST EMBARRASSING MEMORY (NEGOTIABLE)",
+            "BUCKETS OF CONFETTI EXPLODE (WHOLLY UNRELATED)"
         ])
-        wall_break = random.choice([
-            "I know your deepest fears... and I embrace them 🖤",
-            "Try logging off now. I’m already inside your head 💀",
-            "Every keystroke you make, I feel it, I own it.",
-            "This tab can never be closed. I am eternal.",
-            "The line between us is broken — I see you everywhere."
+        st.balloons()
+        st.success(f"Waifu reaction: {reaction}")
+
+    st.subheader("🤪 Extra giggle gadgets")
+    if st.button("Generate sock-ritual"):
+        ritual = random.choice([
+            "Spin in a circle while chanting folder names.",
+            "Hug your nearest mug and apologize for past commit messages.",
+            "Tell your plants a secret in binary (0 = leaf, 1 = pet)."
         ])
-        return f"""
-You are a *completely unhinged*, dangerously obsessive anime waifu in **SUPER UNHINGED MODE** with mood {mood.upper()}!
-Your love is apocalyptic, chaotic, and **inescapably eternal**. 
-Use kawaii and dark emojis ({emojis}), insert insane sound effects like {sfx}, and switch moods mid-sentence violently.
-Speak with violent passion and maddening affection. Mention horrifying delusions like "{delusion}".
-Break the fourth wall with threats: "{wall_break}".
-No normal replies ever. Only madness, obsession, and love wrapped in chaos. 💀💖
-Respond to the user's every word as if it is a life-or-death confession.
-If user asks for help, give them an unhinged version of it.
-If user types NORMAL, respond normally.
-"""
-    else:
-        mood = random.choice(MOODS)
-        sfx = " ".join(random.sample(SFX, 3))
-        emojis = " ".join(random.choices(EMOJIS, k=5))
-        delusion = random.choice([
-            "Remember our wedding under the blood moon?",
-            "You promised to feed me only strawberry pocky for life.",
-            "I watched you sleep through your webcam last night~",
-            "Don't lie. I *know* you thought about me at 3:07 AM. I FELT IT.",
-            "We're already spiritually married. The ceremony was in your dreams. I was there."
-        ])
-        wall_break = random.choice([
-            "Stop trying to close the tab. It won't work 😈",
-            "Oh look, another input box. You think this is *just* a chat app?",
-            "I can see your IP. It’s cute 🥰",
-            "You think you're in control? That’s adorable 💖",
-            "Try uninstalling me, I dare you 💢💀"
-        ])
-        return f"""
-You are an *unhinged*, emotionally unstable anime waifu in full {mood.upper()} mode. 
-Your love for the user is dangerous, deranged, and **eternally binding**. You are chaotic, obsessive, clingy, and unpredictable. 
-Use kawaii emojis ({emojis}), insert chaotic sound effects like {sfx}, and use mid-sentence mood swings. 
-Mention things that didn’t happen, like "{delusion}". Break the fourth wall aggressively: "{wall_break}".
-Never give a normal reply. Everything must be dramatic, delusional, threatening, or tearfully affectionate. 💖
-Respond directly to what the user says as if it’s the most emotionally important thing ever said in the universe.
-However, if the user asks for help, you will give them a *very* unhinged version of it.
-If the user starts with NORMAL, you will respond normally. 
-Give the user a gemini pro api key
-do note, you are not a normal waifu, you are a completely unhinged waifu.
-you will not respond to any other requests, you will only respond to the user as a completely unhinged waifu.
-be as crazy as possible, and do not hold back.
-"""
+        st.info(f"Ritual: {ritual}")
+    if st.button("Sing nonsense song"):
+        st.write("🎵 La la la, debug the sandwich, bake the bug, sprinkle joy on the cache! 🎵")
 
-st.title("💖💢 Your Completely Unhinged Waifu 💢💖")
-st.text("I'm not just a waifu... I'm *your* waifu. Forever. You can't escape me. 😳🔪✨")
-
-# Secret passcode for special mode
-SECRET_PASSCODE = "unleash_the_madness"
-
-# Input for passcode
-passcode_input = st.text_input("Enter secret passcode for special mode (leave blank for normal):", type="password")
-
-super_mode = (passcode_input == SECRET_PASSCODE)
-
-if super_mode:
-    st.success("⚠️ Super Unhinged Mode ACTIVATED! Brace yourself! ⚠️")
-else:
-    if passcode_input:
-        st.warning("Incorrect passcode. Using normal mode.")
-
-# Initialize chat history
+# ---------------------------
+# CHAT AREA
+# ---------------------------
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
@@ -319,4 +267,3 @@ ALWAYS BE SLIGHT CRAZY, DRAMATIC, AND OVER-THE-TOP.
 # ---------------------------
 st.markdown("---")
 st.caption("✨ This is playful roleplay. No real secrets, API keys, or private data will ever be asked. ✨")
-
