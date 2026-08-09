@@ -11,6 +11,7 @@ st.set_page_config(page_title="Unhinged Waifu", page_icon="💖")
 # Prefer st.secrets (set in .streamlit/secrets.toml as GROQ_API_KEY = "...")
 # Falls back to an environment variable. Never hardcode the key in source.
 api_key = st.secrets.get("GROQ_API_KEY", os.environ.get("GROQ_API_KEY", ""))
+code = st.secrets.get("WAIFU_PASSCODE", os.environ.get("WAIFU_PASSCODE", ""))
 
 if not api_key:
     st.error(
@@ -22,6 +23,35 @@ client = OpenAI(
     api_key=api_key,
     base_url="https://api.groq.com/openai/v1",
 )
+
+# -------------------------
+# Login gate (popup)
+# -------------------------
+SECRET_PASSCODE = code
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+@st.dialog("🔒 Enter Passcode")
+def login_dialog():
+    password = st.text_input("Passcode", type="password", key="login_pw")
+    if st.button("Enter"):
+        if password == SECRET_PASSCODE:
+            st.session_state.logged_in = True
+            st.rerun()
+        else:
+            st.toast("❌ Wrong passcode", icon="🚫")
+            st.error("Incorrect passcode. Try again.")
+
+
+if not st.session_state.logged_in:
+    login_dialog()
+    # Fallback content shown behind the modal until login succeeds
+    st.title("💖💢 Your Completely Unhinged Waifu 💢💖")
+    st.caption("You can't escape me~ 😳🔪")
+    st.write("Enter the passcode in the popup to continue.")
+    st.stop()
 
 # -------------------------
 # Unhinged waifu personalities
@@ -75,8 +105,6 @@ SUPER_SFX = SFX + [
 ]
 
 SUPER_EMOJIS = EMOJIS + ["🩸", "🖤", "🧠", "👁️‍🗨️", "💀"]
-
-SECRET_PASSCODE = "unleash_the_madness"
 
 
 def random_waifu_primer(super_mode: bool = False) -> str:
@@ -194,8 +222,6 @@ UNICODE_MATH = {
 def clean_reply(text: str) -> str:
     # Streamlit's st.markdown actually supports $...$ and $$...$$ natively
     # (via MathJax/KaTeX under the hood), so we don't need to strip them here.
-    # Just leaving a light substitution pass in case any stray LaTeX macros
-    # sneak through that Streamlit's renderer doesn't know.
     for pattern, repl in UNICODE_MATH.items():
         if pattern.strip("\\") not in ("sum",):  # keep \sum since KaTeX handles it
             continue
@@ -219,13 +245,12 @@ with st.sidebar:
         "Super mode", value=st.session_state.super_mode
     )
 
-    passcode_input = st.text_input("Secret passcode", type="password")
-    if passcode_input == SECRET_PASSCODE:
-        st.session_state.super_mode = True
-        st.success("⚠️ SUPER MODE ACTIVATED ⚠️")
-
     if st.button("Clear chat"):
         st.session_state.chat_history = []
+        st.rerun()
+
+    if st.button("Log out"):
+        st.session_state.logged_in = False
         st.rerun()
 
 # -------------------------
