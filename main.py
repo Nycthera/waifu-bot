@@ -48,9 +48,9 @@ def login_dialog():
 if not st.session_state.logged_in:
     login_dialog()
     # Fallback content shown behind the modal until login succeeds
-    st.title("💖💢 Your Completely Unhinged Waifu 💢💖")
-    st.caption("You can't escape me~ 😳🔪")
-    st.write("Enter the passcode in the popup to continue.")
+    st.title("Because of some people")
+    st.caption("There is now a login screen")
+    st.write("please get a key from the owner to access")
     st.stop()
 
 # -------------------------
